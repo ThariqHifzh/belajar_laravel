@@ -1,6 +1,7 @@
 @extends('kalkulator.index')
 {{-- block section --}}
 @section('content')
+<div class="justify-content-center text-center d-flex">
     <form action="{{ route('store-tambah') }}"  class="mt-3" method="post">
         @csrf
         <label for="">Angka 1</label>
@@ -16,6 +17,6 @@
         <br>
         <button class="btn btn-sm btn-primary px-4" style="border-radius: 20px;">Proses</button>
     </form>
-
-    <h5>Hasilnya Adalah : {{ $jumlah }}</h5>
+</div>
+    <h5 class="text-center">Hasilnya Adalah : {{ $jumlah }}</h5>
 @endsection

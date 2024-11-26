@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KalkulatorController;
 use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 //  /(slash): default route
@@ -12,8 +14,12 @@ use Illuminate\Support\Facades\Route;
 // put : mengirim data dari form (update)
 // delete : mengirim data dari form (delete)
 
-Route::get('/', function () {
-    return view('kalkulator.index');
+Route::get('/', [LoginController::class, 'index']);
+Route::post('actionLogin', [LoginController::class, 'actionLogin'])->name('actionLogin');
+
+// grouping routing setelah login
+Route::middleware(['auth'])->group(function(){
+Route::resource('dashboard', DashboardController::class);
 });
 
 Route::get('latihan', [LatihanController::class, 'index']);
@@ -32,3 +38,4 @@ Route::post('store-kali', [KalkulatorController::class, 'storeKali'])->name('sto
 Route::post('store-bagi', [KalkulatorController::class, 'storeBagi'])->name('store-bagi');
 
 Route::resource('user', UsersController::class);
+Route::get('delete/{id}', [UsersController::class, 'delete'])->name('delete');

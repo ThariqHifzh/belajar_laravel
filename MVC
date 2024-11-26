@@ -6,3 +6,8 @@ Controller : Menghubungkan antara Model dan View
 
 artisan : perintah untuk membuat fitur-fitur yang ada di laravel
 composer : install package yang ada di php
+
+Migration untuk bikin table
+ contoh :
+php artisan make:migration create_(nama_table)_table
+nama table harus ada "s" dibelakangnya

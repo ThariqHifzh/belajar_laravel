@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UsersController extends Controller
 {
@@ -14,7 +15,9 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::get();
-        return view('kalkulator.user', compact('users'));
+        $title = "Data User";
+
+        return view('user.index', compact('users', 'title'));
     }
 
     /**
@@ -23,7 +26,7 @@ class UsersController extends Controller
     public function create()
     {
         $title = 'Tambah User';
-        return view('kalkulator.tambah-user', compact('title'));
+        return view('user.create', compact('title'));
     }
 
     /**
@@ -32,6 +35,7 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         User::create($request->all());
+        Alert::success('Success', 'Berhasil Ditambah');
         return redirect()->to('user');
     }
 
@@ -50,7 +54,7 @@ class UsersController extends Controller
     {
         $title = "Edit User";
         $user = User::find($id);
-        return view('kalkulator.edit-user', compact('title', 'user'));
+        return view('user.edit', compact('title', 'user'));
     }
 
     /**
@@ -70,7 +74,7 @@ class UsersController extends Controller
                 'email' => $request->email,
             ]);
         }
-
+        Alert::success('Success', 'Data Berhasil Diubah');
         return redirect()->to('user');
     }
 
@@ -79,6 +83,14 @@ class UsersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id)->delete();
+        Alert::success('Success', 'Data Berhasil Dihapus');
+        return redirect()->to('user');
+    }
+
+    public function delete($id)
+    {
+        $user = User::find($id)->delete();
+        return redirect()->to('user');
     }
 }
