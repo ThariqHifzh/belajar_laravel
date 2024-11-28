@@ -152,6 +152,23 @@
 
     <!-- Main JS -->
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
+    <script>
+        // let button = document.querySelector('.add-row');
+        $('.add-row').click(function(e){
+            e.preventDefault();
+            let newRow = "";
+                 newRow+="<tr>";
+                    newRow +="<td>Hello World</td>";
+                    newRow +="<td>Halo Dunia</td>";
+                    newRow +="<td>Hallo Welt</td>";
+                    newRow +="<td>Salut tout le monde</td>";
+                 newRow +="</tr>";
+
+            let tbody = $('.tbody-parent');
+            tbody.append(newRow);
+
+        });
+    </script>
 
     <!-- Page JS -->
 

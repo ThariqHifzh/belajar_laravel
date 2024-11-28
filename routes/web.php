@@ -3,7 +3,10 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KalkulatorController;
 use App\Http\Controllers\LatihanController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,11 +18,16 @@ use Illuminate\Support\Facades\Route;
 // delete : mengirim data dari form (delete)
 
 Route::get('/', [LoginController::class, 'index']);
+Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('actionLogin', [LoginController::class, 'actionLogin'])->name('actionLogin');
+Route::get('keluar', [LoginController::class, 'logout'])->name('keluar');
 
 // grouping routing setelah login
 Route::middleware(['auth'])->group(function(){
-Route::resource('dashboard', DashboardController::class);
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('service', ServiceController::class);
+    Route::resource('customer', CustomerController::class);
+    Route::resource('order', OrderController::class);
 });
 
 Route::get('latihan', [LatihanController::class, 'index']);
@@ -36,6 +44,7 @@ Route::post('store-tambah', [KalkulatorController::class, 'storeTambah'])->name(
 Route::post('store-kurang', [KalkulatorController::class, 'storeKurang'])->name('store-kurang');
 Route::post('store-kali', [KalkulatorController::class, 'storeKali'])->name('store-kali');
 Route::post('store-bagi', [KalkulatorController::class, 'storeBagi'])->name('store-bagi');
+
 
 Route::resource('user', UsersController::class);
 Route::get('delete/{id}', [UsersController::class, 'delete'])->name('delete');
