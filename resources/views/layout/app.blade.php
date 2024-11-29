@@ -153,20 +153,63 @@
     <!-- Main JS -->
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
     <script>
+
+        $('#id_service').change(function(){
+            let id_service = $(this).val();
+
+            $.ajax({
+                url: '/get-service/' + id_service,
+                type:'GET',
+                dataType:'json',
+                success: function(resp){
+                    $('#price').val(resp.price)
+                }
+            })
+        });
+
         // let button = document.querySelector('.add-row');
         $('.add-row').click(function(e){
             e.preventDefault();
+            let service_name = $('#id_service').find('option:selected').text(),
+            id_service = $('#id_service').val(),
+            price = $('#price').val();
+            qty = $('.qty').val();
+            subtotal = parseInt(price) * parseInt(qty);
+
+            if(id_service == ""){
+                alert('Mohon isi paket laundry terlebih dahulu');
+                return false;
+            }
+
+            if(qty == ""){
+                alert('Mohon isi qty terlebih dahulu');
+                return false;
+            }
+
+            let formattedSubtotal = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(subtotal);
+
             let newRow = "";
+
                  newRow+="<tr>";
-                    newRow +="<td>Hello World</td>";
-                    newRow +="<td>Halo Dunia</td>";
-                    newRow +="<td>Hallo Welt</td>";
-                    newRow +="<td>Salut tout le monde</td>";
+                    newRow +="<td>"+ service_name + "<input type='hidden' name='id_service[]' class='id_service form-control' value='" + id_service + "'></td>";
+                    newRow += "<td>" + price + "<input type='hidden' name='price_service[]' class='form-control' value='" + price + "'></td>";
+                    newRow += "<td>" + qty + " Kg<input type='hidden' name='qty[]' id='qty' class='form-control' value='" + qty + "'></td>";
+
+                    newRow += "<td>" + formattedSubtotal + "<input type='hidden' name='subtotal[]' class='subtotal form-control' value='" + subtotal + "'></td>";
                  newRow +="</tr>";
 
             let tbody = $('.tbody-parent');
             tbody.append(newRow);
 
+            let total = 0;
+            $('.subtotal').each(function(){
+                let totalHarga = parseFloat($(this).val()) || 0;
+                total += totalHarga;
+            });
+
+            $('.total-harga').val (total);
+            $('#id_service').val("");
+            $('.qty').val("");
         });
     </script>
 

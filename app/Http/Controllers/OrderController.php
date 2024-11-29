@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -43,7 +44,18 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        Order::create($request->all());
+        // return $request->price_service;
+        $order = Order::create($request->all());
+        foreach($request->id_service as $key => $val){
+            OrderDetail::create([
+                'id_order' => $order->id,
+                'id_service' => $request->id_service[$key],
+                'price_service' => $request->price_service[$key],
+                'qty' => $request->qty[$key],
+                'subtotal' => $request->subtotal[$key]
+            ]);
+        }
+        //
         Alert::success('Success', 'Berhasil Ditambah');
         return redirect()->to('order');
     }
@@ -98,5 +110,12 @@ class OrderController extends Controller
     {
         $order = Order::find($id)->delete();
         return redirect()->to('order');
+    }
+
+    public function getService($id_service)
+    {
+        // $service = Service::where('id', $id_service)->first();
+        $service = Service::find($id_service);
+        return response()->json($service);
     }
 }

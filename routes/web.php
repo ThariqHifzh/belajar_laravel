@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function(){
     Route::resource('service', ServiceController::class);
     Route::resource('customer', CustomerController::class);
     Route::resource('order', OrderController::class);
+
+    Route::get('get-service/{id}', [OrderController::class, 'getService'])->name('get-service');
 });
 
 Route::get('latihan', [LatihanController::class, 'index']);
